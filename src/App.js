@@ -625,7 +625,9 @@ export default function WarehouseDB() {
   const filteredLines = lines.filter((line) => {
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch =
-      line.serie && line.serie.toLowerCase().includes(searchLower);
+      line.NumeroRMA.toLowerCase().includes(searchLower) ||
+      (line.NumeroSerie &&
+        line.NumeroSerie.toLowerCase().includes(searchLower));
     return matchesSearch;
   });
 
@@ -1048,7 +1050,7 @@ export default function WarehouseDB() {
             }}
             className={`px-6 py-2 rounded-lg font-semibold transition-all ${view === "serie" ? "bg-indigo-600 text-white" : "bg-white text-gray-800 border"}`}
           >
-            Por Numero Serie
+            Por RMA/Serie
           </button>
           <button
             onClick={() => {
