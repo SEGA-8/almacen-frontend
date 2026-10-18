@@ -125,13 +125,6 @@ export default function WarehouseDB() {
     } catch (err) {
       alert("Error al cargar datos: " + err.message);
     } finally {
-      console.log("Datos cargados:", {
-        entradas,
-        lines,
-        clientes,
-        transportistas,
-        productos,
-      });
       setLoading(false);
     }
   }, [token]);
@@ -1333,8 +1326,9 @@ export default function WarehouseDB() {
                     <tr className="bg-gray-100 font-bold">
                       <td className="px-3 py-2 text-right">TOTAL UNIDADES:</td>
                       <td className="px-3 py-2">
-                        {formData.lineas.reduce(
-                          (total, linea) => total + (linea.cantidad || 0),
+                        {(formData.lineas || []).reduce(
+                          (total, linea) =>
+                            total + (Number(linea.cantidad) || 0),
                           0,
                         )}
                       </td>
