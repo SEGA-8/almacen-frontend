@@ -107,16 +107,15 @@ export default function WarehouseDB() {
     setLoading(true);
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const [entResult, liResult, clResult, trResult, arResult] =
-        await Promise.all([
-          fetch(`${API_URL}/entradas/${numberOfEntries}`, { headers }).then(
-            (r) => r.json(),
-          ),
-          fetch(`${API_URL}/lineas`, { headers }).then((r) => r.json()),
-          fetch(`${API_URL}/clientes`, { headers }).then((r) => r.json()),
-          fetch(`${API_URL}/transportistas`, { headers }).then((r) => r.json()),
-          fetch(`${API_URL}/productos`, { headers }).then((r) => r.json()),
-        ]);
+      const [entResult, liResult, clResult, trResult, arResult] = await Promise.all([
+        fetch(`${API_URL}/entradas/${numberOfEntries}`, { headers }).then((r) =>
+          r.json(),
+        ),
+        fetch(`${API_URL}/lineas`, { headers }).then((r) => r.json()),
+        fetch(`${API_URL}/clientes`, { headers }).then((r) => r.json()),
+        fetch(`${API_URL}/transportistas`, { headers }).then((r) => r.json()),
+        fetch(`${API_URL}/productos`, { headers }).then((r) => r.json()),
+      ]);
       setEntradas(entResult);
       setLines(liResult);
       setClientes(clResult);
@@ -1741,9 +1740,9 @@ export default function WarehouseDB() {
                   <tr>
                     <th className="px-4 py-3 text-left">Nº Entrada</th>
                     <th className="px-4 py-3 text-left">Codigo Producto</th>
-                    <th className="px-4 py-3 text-left">Descripcion</th>
+                    <th className="px-4 py-3 text-left">Nombre Producto</th>
                     <th className="px-4 py-3 text-left">RMA</th>
-                    <th className="px-4 py-3 text-left">serie</th>
+                    <th className="px-4 py-3 text-left">Serie</th>
                     <th className="px-4 py-3 text-left">Unidades</th>
                     <th className="px-4 py-3 text-center">Acciones</th>
                   </tr>
@@ -1948,7 +1947,7 @@ export default function WarehouseDB() {
                 <button
                   onClick={handleAddProduct}
                   disabled={loading}
-                  className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-400 transition-all"
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-all"
                 >
                   {editingProductId ? "Actualizar" : "Crear Producto"}
                 </button>
