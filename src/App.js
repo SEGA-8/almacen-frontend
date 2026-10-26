@@ -28,6 +28,7 @@ export default function WarehouseDB() {
   });
   const [showRegister, setShowRegister] = useState(false);
   const [entradas, setEntradas] = useState([]);
+  const [lines, setLines] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [transportistas, setTransportistas] = useState([]);
   const [productos, setProductos] = useState([]);
@@ -106,27 +107,23 @@ export default function WarehouseDB() {
     setLoading(true);
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const [entResult, clResult, trResult, arResult] = await Promise.all([
+      const [entResult, liResult, clResult, trResult, arResult] = await Promise.all([
         fetch(`${API_URL}/entradas/${numberOfEntries}`, { headers }).then((r) =>
           r.json(),
         ),
+        fetch(`${API_URL}/lineas`, { headers }).then((r) => r.json()),
         fetch(`${API_URL}/clientes`, { headers }).then((r) => r.json()),
         fetch(`${API_URL}/transportistas`, { headers }).then((r) => r.json()),
         fetch(`${API_URL}/productos`, { headers }).then((r) => r.json()),
       ]);
       setEntradas(entResult);
+      setLines(liResult);
       setClientes(clResult);
       setTransportistas(trResult);
       setProductos(arResult);
     } catch (err) {
       alert("Error al cargar datos: " + err.message);
     } finally {
-      console.log("Datos cargados:", {
-        entradas,
-        clientes,
-        transportistas,
-        productos,
-      });
       setLoading(false);
     }
   }, [token]);
@@ -617,6 +614,15 @@ export default function WarehouseDB() {
     return [];
   }
 
+  const filteredLines = lines.filter((line) => {
+    const searchLower = searchTerm.toLowerCase();
+    const matchesSearch =
+      line.NumeroRMA.toLowerCase().includes(searchLower) ||
+      (line.NumeroSerie &&
+        line.NumeroSerie.toLowerCase().includes(searchLower));
+    return matchesSearch;
+  });
+
   const filteredEntradas = entradas.filter((entry) => {
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch =
@@ -1030,6 +1036,16 @@ export default function WarehouseDB() {
           </button>
           <button
             onClick={() => {
+              // setDateFilter({ fechaInicio: "", fechaFin: "" });
+              setView("serie");
+              resetForm();
+            }}
+            className={`px-6 py-2 rounded-lg font-semibold transition-all ${view === "serie" ? "bg-indigo-600 text-white" : "bg-white text-gray-800 border"}`}
+          >
+            Por RMA/Serie
+          </button>
+          <button
+            onClick={() => {
               setView("form");
               resetForm();
             }}
@@ -1309,8 +1325,9 @@ export default function WarehouseDB() {
                     <tr className="bg-gray-100 font-bold">
                       <td className="px-3 py-2 text-right">TOTAL UNIDADES:</td>
                       <td className="px-3 py-2">
-                        {formData.lineas.reduce(
-                          (total, linea) => total + (linea.cantidad || 0),
+                        {(formData.lineas || []).reduce(
+                          (total, linea) =>
+                            total + (Number(linea.cantidad) || 0),
                           0,
                         )}
                       </td>
@@ -1688,6 +1705,109 @@ export default function WarehouseDB() {
           </div>
         )}
 
+        {view === "serie" && (
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="mb-6 flex flex-col md:flex-row gap-4">
+              <div className="flex-1 relative">
+                <Search
+                  size={20}
+                  className="absolute left-3 top-3 text-gray-400"
+                />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
+                  placeholder="Buscar..."
+                />
+              </div>
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value)}
+                className="border border-gray-300 rounded-lg px-4 py-2"
+              >
+                <option value="all">Todos los estados</option>
+                <option value="Recibido">Recibido</option>
+                <option value="En Inspección">En Inspección</option>
+                <option value="Almacenado">Almacenado</option>
+                <option value="Rechazado">Rechazado</option>
+              </select>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-indigo-600 text-white">
+                  <tr>
+                    <th className="px-4 py-3 text-left">Nº Entrada</th>
+                    <th className="px-4 py-3 text-left">Codigo Producto</th>
+                    <th className="px-4 py-3 text-left">Nombre Producto</th>
+                    <th className="px-4 py-3 text-left">RMA</th>
+                    <th className="px-4 py-3 text-left">Serie</th>
+                    <th className="px-4 py-3 text-left">Unidades</th>
+                    <th className="px-4 py-3 text-center">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredLines.length > 0 ? (
+                    filteredLines.map((line) => (
+                      <tr
+                        key={line.LineaID}
+                        className="border-b hover:bg-gray-50"
+                      >
+                        <td className="px-4 py-3 font-semibold">
+                          {entradas.find((e) => e.EntradaID === line.EntradaID)
+                            ?.NumeroEntrada || ""}
+                        </td>
+                        <td className="px-4 py-3">{line.Codigo}</td>
+                        <td className="px-4 py-3">{line.Descripcion}</td>
+                        <td className="px-4 py-3">{line.NumeroRMA}</td>
+                        <td className="px-4 py-3 font-semibold">
+                          {line.NumeroSerie}
+                        </td>
+                        <td className="px-4 py-3">{line.Cantidad}</td>
+                        <td className="px-4 py-3">
+                          <div className="flex gap-2 justify-center">
+                            <button
+                              onClick={() => handleViewDetails(line.EntradaID)}
+                              className="text-indigo-600 hover:text-indigo-800"
+                            >
+                              <Eye size={18} />
+                            </button>
+                            <button
+                              onClick={() => handleEdit(line.EntradaID)}
+                              className="text-blue-600 hover:text-blue-800"
+                            >
+                              <Edit2 size={18} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(line.EntradaID)}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              <Trash2 size={18} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td
+                        colSpan="7"
+                        className="px-4 py-8 text-center text-gray-500"
+                      >
+                        No hay entradas registradas
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-gray-600 mt-4">
+              Total: {filteredLines.length} entradas
+            </p>
+          </div>
+        )}
+
         {view === "report" && (
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
@@ -1827,7 +1947,7 @@ export default function WarehouseDB() {
                 <button
                   onClick={handleAddProduct}
                   disabled={loading}
-                  className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-400 transition-all"
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-all"
                 >
                   {editingProductId ? "Actualizar" : "Crear Producto"}
                 </button>
