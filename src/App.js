@@ -1757,20 +1757,32 @@ export default function WarehouseDB() {
                         className="border-b hover:bg-gray-50"
                       >
                         <td className="px-4 py-3 font-semibold">
-                          {entradas.find((e) => e.EntradaID === line.EntradaID)
-                            ?.NumeroEntrada || ""}
+                          {entradas.find(
+                          (e) =>
+                            e.EntradaID === line.EntradaID,
+                          )?.NumeroEntrada || ""}
                         </td>
-                        <td className="px-4 py-3">{line.Codigo}</td>
-                        <td className="px-4 py-3">{line.Descripcion}</td>
-                        <td className="px-4 py-3">{line.NumeroRMA}</td>
+                        <td className="px-4 py-3">
+                          {line.Codigo}
+                        </td>
+                        <td className="px-4 py-3">
+                          {line.Descripcion}
+                        </td>
+                        <td className="px-4 py-3">
+                          {line.NumeroRMA }
+                        </td>
                         <td className="px-4 py-3 font-semibold">
                           {line.NumeroSerie}
                         </td>
-                        <td className="px-4 py-3">{line.Cantidad}</td>
+                        <td className="px-4 py-3">
+                          {line.Cantidad}
+                        </td>
                         <td className="px-4 py-3">
                           <div className="flex gap-2 justify-center">
                             <button
-                              onClick={() => handleViewDetails(line.EntradaID)}
+                              onClick={() =>
+                                handleViewDetails(line.EntradaID)
+                              }
                               className="text-indigo-600 hover:text-indigo-800"
                             >
                               <Eye size={18} />
