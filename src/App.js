@@ -680,22 +680,24 @@ export default function WarehouseDB() {
 
       if (reportFilters.fechaInicio) {
         filtered = filtered.filter(
-          (e) => e.fecha_entrada >= reportFilters.fechaInicio,
+          (e) => e.FechaEntrada >= reportFilters.fechaInicio,
         );
       }
       if (reportFilters.fechaFin) {
         filtered = filtered.filter(
-          (e) => e.fecha_entrada <= reportFilters.fechaFin,
+          (e) => e.FechaEntrada <= reportFilters.fechaFin,
         );
       }
       if (reportFilters.cliente) {
         filtered = filtered.filter((e) =>
-          e.cliente.toLowerCase().includes(reportFilters.cliente.toLowerCase()),
+          e.Cliente
+            .toLowerCase()
+            .includes(reportFilters.cliente.toLowerCase()),
         );
       }
       if (reportFilters.transportista) {
         filtered = filtered.filter((e) =>
-          e.transportista
+          e.Transportista
             .toLowerCase()
             .includes(reportFilters.transportista.toLowerCase()),
         );
