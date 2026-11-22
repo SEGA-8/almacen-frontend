@@ -37,7 +37,7 @@ export default function WarehouseDB() {
   const [filterType, setFilterType] = useState("all");
   const [editingId, setEditingId] = useState(null);
   const [numberOfEntries, setNumberOfEntries] = useState(
-    parseInt(localStorage.getItem("numberOfEntries")) || 2,
+    parseInt(localStorage.getItem("numberOfEntries")) || 50,
   );
   const [loading, setLoading] = useState(false);
   const [editingProductId, setEditingProductId] = useState(null);
