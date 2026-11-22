@@ -1114,7 +1114,7 @@ export default function WarehouseDB() {
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
               {editingId ? "Editar Entrada" : "Nueva Entrada"}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-1 pb-1">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 pb-2">
               <input
                 type="text"
                 value={formData.numero_entrada}
@@ -1139,11 +1139,11 @@ export default function WarehouseDB() {
                 }
                 className="border border-gray-300 rounded-lg px-4 py-2"
               >
-                <option>Reparación</option>
-                <option>Pendiente</option>
-                <option>Abono</option>
-                <option>Stock</option>
-                <option>No stock</option>
+                <option value="Reparación">Reparación</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Abono">Abono</option>
+                <option value="En Stock">Stock</option>
+                <option value="No stock">No stock</option>
               </select>
             </div>
 
@@ -1412,10 +1412,10 @@ export default function WarehouseDB() {
                   className="border border-gray-300 rounded-lg px-4 py-2"
                 >
                   <option value="all">Todos los estados</option>
-                  <option value="Reparación">Reparacion</option>
+                  <option value="Reparación">Reparación</option>
                   <option value="Abono">Abono</option>
                   <option value="Pendiente">Pendiente</option>
-                  <option value="Stock">Stock</option>
+                  <option value="En Stock">En Stock</option>
                   <option value="No stock">No stock</option>
                 </select>
               </div>
@@ -1497,7 +1497,7 @@ export default function WarehouseDB() {
                                     {entry.NumeroEntrada}
                                   </span>
                                   <span
-                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${entry.Estado === "Reparación" ? "bg-green-100 text-green-800" : entry.Estado === "No stock" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}
+                                    className={`px-3 py-1 rounded-full text-xs font-semibold ${entry.Estado === "Reparación" ? "bg-yellow-100 text-yellow-800" : entry.Estado === "Abono" ? "bg-blue-100 text-blue-800" : entry.Estado === "Pendiente" ? "bg-gray-100 text-gray-800" : entry.Estado === "En Stock" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
                                   >
                                     {entry.Estado}
                                   </span>
@@ -1616,10 +1616,10 @@ export default function WarehouseDB() {
                 className="border border-gray-300 rounded-lg px-4 py-2"
               >
                 <option value="all">Todos los estados</option>
-                <option value="Reparación">Reparacion</option>
+                <option value="Reparación">Reparación</option>
                 <option value="Abono">Abono</option>
                 <option value="Pendiente">Pendiente</option>
-                <option value="Stock">Stock</option>
+                <option value="En Stock">En Stock</option>
                 <option value="No stock">No stock</option>
               </select>
             </div>
@@ -1659,7 +1659,7 @@ export default function WarehouseDB() {
                         </td>
                         <td className="px-4 py-3">
                           <span
-                            className={`px-3 py-1 rounded-full text-xs font-semibold ${entry.Estado === "Reparación" ? "bg-yellow-100 text-yellow-800" : entry.Estado === "Abono" ? "bg-blue-100 text-blue-800" : entry.Estado === "Pendiente" ? "bg-gray-100 text-gray-800" : entry.Estado === "Stock" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+                            className={`px-3 py-1 rounded-full text-xs font-semibold ${entry.Estado === "Reparación" ? "bg-yellow-100 text-yellow-800" : entry.Estado === "Abono" ? "bg-blue-100 text-blue-800" : entry.Estado === "Pendiente" ? "bg-gray-100 text-gray-800" : entry.Estado === "En Stock" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
                           >
                             {entry.Estado}
                           </span>
@@ -1929,7 +1929,7 @@ export default function WarehouseDB() {
                   onChange={(e) =>
                     setProductForm({ ...productForm, codigo: e.target.value })
                   }
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Código del Producto *"
                 />
                 <input
@@ -1941,7 +1941,7 @@ export default function WarehouseDB() {
                       descripcion: e.target.value,
                     })
                   }
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   placeholder="Descripción"
                 />
               </div>
@@ -1949,7 +1949,7 @@ export default function WarehouseDB() {
                 <button
                   onClick={handleAddProduct}
                   disabled={loading}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-all"
+                  className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-400 transition-all"
                 >
                   {editingProductId ? "Actualizar" : "Crear Producto"}
                 </button>
@@ -2050,7 +2050,7 @@ export default function WarehouseDB() {
                   onChange={(e) =>
                     setClientForm({ ...clientForm, nombre: e.target.value })
                   }
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Nombre del Cliente *"
                 />
                 <input
@@ -2059,7 +2059,7 @@ export default function WarehouseDB() {
                   onChange={(e) =>
                     setClientForm({ ...clientForm, email: e.target.value })
                   }
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Email"
                 />
                 <input
@@ -2068,7 +2068,7 @@ export default function WarehouseDB() {
                   onChange={(e) =>
                     setClientForm({ ...clientForm, telefono: e.target.value })
                   }
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Teléfono"
                 />
                 <input
@@ -2077,7 +2077,7 @@ export default function WarehouseDB() {
                   onChange={(e) =>
                     setClientForm({ ...clientForm, direccion: e.target.value })
                   }
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Dirección"
                 />
               </div>
@@ -2195,7 +2195,7 @@ export default function WarehouseDB() {
                   onChange={(e) =>
                     setCarrierForm({ ...carrierForm, nombre: e.target.value })
                   }
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   placeholder="Nombre del Transportista *"
                 />
                 <input
@@ -2204,7 +2204,7 @@ export default function WarehouseDB() {
                   onChange={(e) =>
                     setCarrierForm({ ...carrierForm, email: e.target.value })
                   }
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   placeholder="Email"
                 />
                 <input
@@ -2213,7 +2213,7 @@ export default function WarehouseDB() {
                   onChange={(e) =>
                     setCarrierForm({ ...carrierForm, telefono: e.target.value })
                   }
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   placeholder="Teléfono"
                 />
                 <input
@@ -2222,7 +2222,7 @@ export default function WarehouseDB() {
                   onChange={(e) =>
                     setCarrierForm({ ...carrierForm, empresa: e.target.value })
                   }
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="bg-white border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   placeholder="Empresa"
                 />
               </div>
@@ -2374,7 +2374,7 @@ export default function WarehouseDB() {
                     <div className="flex justify-between">
                       <span className="text-gray-600">Estado:</span>
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${selectedEntry.entrada.Estado === "Stock" ? "bg-green-100 text-green-800" : selectedEntry.entrada.Estado === "No stock" ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"}`}
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${selectedEntry.entrada.Estado === "Reparación" ? "bg-yellow-100 text-yellow-800" : selectedEntry.entrada.Estado === "Abono" ? "bg-blue-100 text-blue-800" : selectedEntry.entrada.Estado === "Pendiente" ? "bg-gray-100 text-gray-800" : selectedEntry.entrada.Estado === "En Stock" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
                       >
                         {selectedEntry.entrada.Estado}
                       </span>
@@ -2483,7 +2483,7 @@ export default function WarehouseDB() {
                 </table>
               </div>
 
-              <div className="grid grid-cols-2 gap-6 bg-indigo-50 p-4 rounded-lg border-2 border-indigo-200">
+              <div className="grid grid-cols-2 gap-6 mt-1 bg-indigo-50 p-4 rounded-lg border-2 border-indigo-200">
                 <div className="text-left mb-2">
                   <h3 className="text-sm font-semibold text-gray-600">
                     Total de Bultos
