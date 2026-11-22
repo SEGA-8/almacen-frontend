@@ -1207,8 +1207,8 @@ export default function WarehouseDB() {
               Líneas de Productos
             </h3>
 
-            <div className="bg-gray-50 p-4 rounded-lg mb-4">
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mb-3">
+            <div className="bg-gray-50 rounded-lg mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-2 mb-3">
                 <select
                   value={lineaActual.id_producto}
                   onChange={(e) =>
